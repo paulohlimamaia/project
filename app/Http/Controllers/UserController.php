@@ -116,10 +116,10 @@ class UserController extends Controller
     public function update(Request $request, User $user)
     {
         if ($user === null) {
-            return response()->json(['error' => 'User not found'], 404);
+            return response()->json(['error' => 'Usuário não encontrado'], 404);
         }
         if ($user->isAdmin()) {
-            return response()->json(['error' => 'Admin can not be modified'], 403);
+            return response()->json(['error' => 'Perfil administrador não pode ser modificado'], 403);
         }
 
         $validator = Validator::make($request->all(), $this->getValidationRules(false));
@@ -129,7 +129,7 @@ class UserController extends Controller
             $email = $request->get('email');
             $found = User::where('email', $email)->first();
             if ($found && $found->id !== $user->id) {
-                return response()->json(['error' => 'Email has been taken'], 403);
+                return response()->json(['error' => 'Email já existe'], 403);
             }
 
             $user->name = $request->get('name');
@@ -149,11 +149,11 @@ class UserController extends Controller
     public function updatePermissions(Request $request, User $user)
     {
         if ($user === null) {
-            return response()->json(['error' => 'User not found'], 404);
+            return response()->json(['error' => 'Usuário não encontrado'], 404);
         }
 
         if ($user->isAdmin()) {
-            return response()->json(['error' => 'Admin can not be modified'], 403);
+            return response()->json(['error' => 'Perfil administrador não pode ser modificado'], 403);
         }
 
         $permissionIds = $request->get('permissions', []);
@@ -180,7 +180,7 @@ class UserController extends Controller
     public function destroy(User $user)
     {
         if ($user->isAdmin()) {
-            response()->json(['error' => 'Ehhh! Can not delete admin user'], 403);
+            response()->json(['error' => 'Perfil administrador não pode ser deletado'], 403);
         }
 
         try {

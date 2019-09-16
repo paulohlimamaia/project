@@ -8,7 +8,7 @@ const adminRoutes = {
   name: 'Administrator',
   alwaysShow: true,
   meta: {
-    title: 'administrator',
+    title: 'Administrador',
     icon: 'admin',
     permissions: ['view menu administrator'],
   },
@@ -25,35 +25,35 @@ const adminRoutes = {
       path: 'users',
       component: () => import('@/views/users/List'),
       name: 'UserList',
-      meta: { title: 'users', icon: 'user', permissions: ['manage user'] },
+      meta: { title: 'Usuários', icon: 'user', permissions: ['manage user'] },
     },
     /** Role and permission */
     {
       path: 'roles',
       component: () => import('@/views/role-permission/List'),
       name: 'RoleList',
-      meta: { title: 'rolePermission', icon: 'role', permissions: ['manage permission'] },
+      meta: { title: 'Permissões', icon: 'role', permissions: ['manage permission'] },
     },
-    {
-      path: 'articles/create',
-      component: () => import('@/views/articles/Create'),
-      name: 'CreateArticle',
-      meta: { title: 'createArticle', icon: 'edit', permissions: ['manage article'] },
-      hidden: true,
-    },
-    {
-      path: 'articles/edit/:id(\\d+)',
-      component: () => import('@/views/articles/Edit'),
-      name: 'EditArticle',
-      meta: { title: 'editArticle', noCache: true, permissions: ['manage article'] },
-      hidden: true,
-    },
-    {
-      path: 'articles',
-      component: () => import('@/views/articles/List'),
-      name: 'ArticleList',
-      meta: { title: 'articleList', icon: 'list', permissions: ['manage article'] },
-    },
+    // {
+    //   path: 'articles/create',
+    //   component: () => import('@/views/articles/Create'),
+    //   name: 'CreateArticle',
+    //   meta: { title: 'createArticle', icon: 'edit', permissions: ['manage article'] },
+    //   hidden: true,
+    // },
+    // {
+    //   path: 'articles/edit/:id(\\d+)',
+    //   component: () => import('@/views/articles/Edit'),
+    //   name: 'EditArticle',
+    //   meta: { title: 'editArticle', noCache: true, permissions: ['manage article'] },
+    //   hidden: true,
+    // },
+    // {
+    //   path: 'articles',
+    //   component: () => import('@/views/articles/List'),
+    //   name: 'ArticleList',
+    //   meta: { title: 'articleList', icon: 'list', permissions: ['manage article'] },
+    // },
   ],
 };
 

@@ -1,11 +1,11 @@
 <template>
   <div class="navbar">
-    <hamburger id="hamburger-container" :is-active="sidebar.opened" class="hamburger-container" @toggleClick="toggleSideBar" />
+    <!-- <hamburger id="hamburger-container" :is-active="sidebar.opened" class="hamburger-container" @toggleClick="toggleSideBar" /> -->
 
     <breadcrumb id="breadcrumb-container" class="breadcrumb-container" />
 
     <div class="right-menu">
-      <template v-if="device!=='mobile'">
+      <!-- <template v-if="device!=='mobile'">
         <search id="header-search" class="right-menu-item" />
 
         <screenfull id="screenfull" class="right-menu-item hover-effect" />
@@ -15,30 +15,31 @@
         </el-tooltip>
 
         <lang-select class="right-menu-item hover-effect" />
-      </template>
+      </template> -->
 
       <el-dropdown class="avatar-container right-menu-item hover-effect" trigger="click">
         <div class="avatar-wrapper">
-          <img :src="avatar+'/128'" class="user-avatar">
+          <!-- <img :src="avatar+'/128'" class="user-avatar"> -->
+          <svg-icon icon-class="user" />
           <i class="el-icon-caret-bottom" />
         </div>
         <el-dropdown-menu slot="dropdown">
-          <router-link to="/">
+          <!-- <router-link to="/">
             <el-dropdown-item>
               {{ $t('navbar.dashboard') }}
             </el-dropdown-item>
-          </router-link>
-          <router-link v-show="userId !== null" :to="`/administrator/users/edit/${userId}`">
+          </router-link> -->
+          <!-- <router-link v-show="userId !== null" :to="`/administrator/users/edit/${userId}`">
             <el-dropdown-item>
               {{ $t('navbar.profile') }}
             </el-dropdown-item>
-          </router-link>
-          <a target="_blank" href="https://github.com/tuandm/laravue/">
+          </router-link> -->
+          <!-- <a target="_blank" href="https://github.com/tuandm/laravue/">
             <el-dropdown-item>
               {{ $t('navbar.github') }}
             </el-dropdown-item>
-          </a>
-          <el-dropdown-item divided>
+          </a> -->
+          <el-dropdown-item>
             <span style="display:block;" @click="logout">{{ $t('navbar.logOut') }}</span>
           </el-dropdown-item>
         </el-dropdown-menu>

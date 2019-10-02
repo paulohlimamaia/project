@@ -19,7 +19,7 @@ import Layout from '@/layout';
 // import tableRoutes from './modules/table';
 import adminRoutes from './modules/admin';
 // import nestedRoutes from './modules/nested';
-// import errorRoutes from './modules/error';
+import errorRoutes from './modules/error';
 // import excelRoutes from './modules/excel';
 // import permissionRoutes from './modules/permission';
 
@@ -47,6 +47,20 @@ import adminRoutes from './modules/admin';
 **/
 
 export const constantRoutes = [
+
+  {
+    path: '',
+    component: Layout,
+    redirect: 'dashboard',
+    children: [
+      {
+        path: 'dashboard',
+        component: () => import('@/views/dashboard/index'),
+        name: 'Dashboard',
+        meta: { title: 'dashboard', icon: 'dashboard', noCache: false },
+      },
+    ],
+  },
   {
     path: '/redirect',
     component: Layout,
@@ -64,14 +78,13 @@ export const constantRoutes = [
     hidden: true,
   },
   {
-    path: '/auth-redirect',
-    component: () => import('@/views/login/AuthRedirect'),
+    path: '/forgot',
+    component: () => import('@/views/forgot/index'),
     hidden: true,
   },
   {
-    path: '/404',
-    redirect: { name: 'Page404' },
-    component: () => import('@/views/error-page/404'),
+    path: '/auth-redirect',
+    component: () => import('@/views/login/AuthRedirect'),
     hidden: true,
   },
   {
@@ -80,45 +93,10 @@ export const constantRoutes = [
     hidden: true,
   },
   {
-    path: '',
-    component: Layout,
-    redirect: 'dashboard',
-    children: [
-      {
-        path: 'dashboard',
-        component: () => import('@/views/dashboard/index'),
-        name: 'Dashboard',
-        meta: { title: 'dashboard', icon: 'dashboard', noCache: false },
-      },
-    ],
+    path: '/404',
+    component: () => import('@/views/error-page/404'),
+    hidden: true,
   },
-  // {
-  //   path: '/documentation',
-  //   component: Layout,
-  //   redirect: '/documentation/index',
-  //   children: [
-  //     {
-  //       path: 'index',
-  //       component: () => import('@/views/documentation/index'),
-  //       name: 'Documentation',
-  //       meta: { title: 'documentation', icon: 'documentation', noCache: true },
-  //     },
-  //   ],
-  // },
-  // {
-  //   path: '/guide',
-  //   component: Layout,
-  //   redirect: '/guide/index',
-  //   children: [
-  //     {
-  //       path: 'index',
-  //       component: () => import('@/views/guide/index'),
-  //       name: 'Guide',
-  //       meta: { title: 'guide', icon: 'guide', noCache: true },
-  //     },
-  //   ],
-  // },
-  // elementUiRoutes,
 ];
 
 export const asyncRoutes = [
@@ -133,7 +111,7 @@ export const asyncRoutes = [
     path: '/layouts',
     component: Layout,
     redirect: '/layouts/upload',
-    name: 'Administrator',
+    name: 'Layouts',
     alwaysShow: true,
     meta: {
       title: 'Layouts',
@@ -143,7 +121,7 @@ export const asyncRoutes = [
     children: [
       {
         path: 'upload',
-        component: () => import('@/views/layoutsExport/index'),
+        component: () => import('@/views/layoutsImport/index'),
         name: 'Upload',
         meta: { title: 'Upload', icon: 'documentation', noCache: false },
       },

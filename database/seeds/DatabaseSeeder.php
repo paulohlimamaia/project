@@ -16,23 +16,23 @@ class DatabaseSeeder extends Seeder
     {
         $admin = User::create([
             'name' => 'Admin',
-            'email' => 'admin@laravue.dev',
-            'password' => Hash::make('laravue'),
+            'email' => 'admin@moraes.com',
+            'password' => Hash::make('@mudar123'),
         ]);
         $manager = User::create([
             'name' => 'Manager',
-            'email' => 'manager@laravue.dev',
-            'password' => Hash::make('laravue'),
+            'email' => 'manager@moraes.com',
+            'password' => Hash::make('@mudar123'),
         ]);
         $editor = User::create([
             'name' => 'Editor',
-            'email' => 'editor@laravue.dev',
-            'password' => Hash::make('laravue'),
+            'email' => 'editor@moraes.com',
+            'password' => Hash::make('@mudar123'),
         ]);
         $user = User::create([
             'name' => 'User',
-            'email' => 'user@laravue.dev',
-            'password' => Hash::make('laravue'),
+            'email' => 'user@moraes.com',
+            'password' => Hash::make('@mudar123'),
         ]);
         // $visitor = User::create([
         //     'name' => 'Visitor',

@@ -7,22 +7,22 @@
         </template>
       </el-table-column>
 
-      <el-table-column width="150" align="center" :label="$t('table.name')">
+      <el-table-column width="150" align="center" label="Nome">
         <template slot-scope="scope">
           <span>{{ scope.row.name | uppercaseFirst }}</span>
         </template>
       </el-table-column>
 
-      <el-table-column align="left" :label="$t('table.description')">
+      <el-table-column align="left" label="Descrição">
         <template slot-scope="scope">
           <span>{{ scope.row.description }}</span>
         </template>
       </el-table-column>
 
-      <el-table-column v-if="checkPermission(['manage permission'])" align="center" label="Actions" width="200">
+      <el-table-column v-if="checkPermission(['manage permission'])" align="center" label="Ações" width="200">
         <template slot-scope="scope">
           <el-button v-if="scope.row.name !== 'admin'" v-permission="['manage permission']" type="primary" size="small" icon="el-icon-edit" @click="handleEditPermissions(scope.row.id);">
-            {{ $t('permission.editPermission') }}
+            Editar Permissões
           </el-button>
         </template>
       </el-table-column>
@@ -38,13 +38,13 @@
               </el-form-item>
             </el-form>
           </div>
-          <div class="block">
+          <!-- <div class="block">
             <el-form :model="currentRole" label-width="80px" label-position="top">
               <el-form-item label="Permissions">
                 <el-tree ref="otherPermissions" :data="otherPermissions" :default-checked-keys="permissionKeys(roleOtherPermissions)" :props="permissionProps" show-checkbox node-key="id" class="permission-tree" />
               </el-form-item>
             </el-form>
-          </div>
+          </div> -->
           <div class="clear-left" />
         </div>
         <div style="text-align:right;">

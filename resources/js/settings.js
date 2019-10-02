@@ -4,7 +4,7 @@ export default {
   /**
    * @type {String}
    */
-  title: 'esiops',
+  title: 'SSIntegra',
   theme: variables.theme,
 
   /**

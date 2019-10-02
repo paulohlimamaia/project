@@ -43,15 +43,10 @@
 
       <el-table-column align="center" label="Ações" width="350">
         <template slot-scope="scope">
-          <router-link v-if="!scope.row.roles.includes('admin')" :to="'/administrator/users/edit/'+scope.row.id">
-            <el-button v-permission="['manage user']" type="primary" size="small" icon="el-icon-edit">
-              Editar
-            </el-button>
-          </router-link>
           <el-button v-if="!scope.row.roles.includes('admin')" v-permission="['manage permission']" type="warning" size="small" icon="el-icon-edit" @click="handleEditPermissions(scope.row.id);">
             Permissões
           </el-button>
-          <el-button v-if="scope.row.roles.includes('visitor')" v-permission="['manage user']" type="danger" size="small" icon="el-icon-delete" @click="handleDelete(scope.row.id, scope.row.name);">
+          <el-button v-if="scope.row.roles.includes('visitor') || scope.row.roles.includes('user') || scope.row.roles.includes('editor') || scope.row.roles.includes('manager')" v-permission="['manage user']" type="danger" size="small" icon="el-icon-delete" @click="handleDelete(scope.row.id, scope.row.name);">
             Deletar
           </el-button>
         </template>

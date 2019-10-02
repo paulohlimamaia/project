@@ -32,10 +32,9 @@
           Sign in
         </el-button>
       </el-form-item>
-      <!-- <div class="tips">
-        <span style="margin-right:20px;">Email: admin@laravue.dev</span>
-        <span>Password: laravue</span>
-      </div> -->
+      <div class="tips" style="text-align: center;">
+        <span style="cursor: pointer;" @click="forgotPassword">Esqueceu sua senha?</span>
+      </div>
     </el-form>
   </div>
 </template>
@@ -113,6 +112,10 @@ export default {
           return false;
         }
       });
+    },
+    forgotPassword(){
+      console.log(this.$router);
+      this.$router.push('/forgot');
     },
   },
 };

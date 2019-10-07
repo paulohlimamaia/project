@@ -19,7 +19,7 @@ import Layout from '@/layout';
 // import tableRoutes from './modules/table';
 import adminRoutes from './modules/admin';
 // import nestedRoutes from './modules/nested';
-import errorRoutes from './modules/error';
+// import errorRoutes from './modules/error';
 // import excelRoutes from './modules/excel';
 // import permissionRoutes from './modules/permission';
 
@@ -130,6 +130,26 @@ export const asyncRoutes = [
         component: () => import('@/views/layoutsExport/index'),
         name: 'layoutsExport',
         meta: { title: 'Exportação', icon: 'excel', noCache: false },
+      },
+    ],
+  },
+  {
+    path: '/files',
+    component: Layout,
+    redirect: '/files/index',
+    name: 'Arquivos',
+    alwaysShow: true,
+    meta: {
+      title: 'Arquivos',
+      icon: 'file',
+      permissions: ['view menu administrator'],
+    },
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/fileList/index'),
+        name: 'Lista',
+        meta: { title: 'Lista', icon: 'list', noCache: false },
       },
     ],
   },

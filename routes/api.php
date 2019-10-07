@@ -33,6 +33,10 @@ Route::group(['middleware' => 'api'], function () {
     Route::get('roles/{role}/permissions', 'RoleController@permissions')->middleware('permission:' . \App\Laravue\Acl::PERMISSION_PERMISSION_MANAGE);
     Route::apiResource('permissions', 'PermissionController')->middleware('permission:' . \App\Laravue\Acl::PERMISSION_PERMISSION_MANAGE);
 
+    Route::get('/files', 'FilesController@index');
+    Route::get('/files/{idFile}/delete', 'FilesController@delete');
+    Route::post('/files', 'FilesController@upload');
+
     // Fake APIs
     Route::get('/table/list', function () {
         $rowsNumber = mt_rand(20, 30);

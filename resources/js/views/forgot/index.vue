@@ -21,12 +21,12 @@
 </template>
 
 <script>
-import LangSelect from '@/components/LangSelect';
+// import LangSelect from '@/components/LangSelect';
 import { validEmail } from '@/utils/validate';
 
 export default {
   name: 'Forgot',
-  components: { LangSelect },
+  // components: { LangSelect },
   data() {
     const validateEmail = (rule, value, callback) => {
       if (!validEmail(value)) {

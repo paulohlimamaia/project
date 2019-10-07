@@ -36,7 +36,8 @@ service.interceptors.response.use(
     return response.data;
   },
   error => {
-    let message = error.message;
+    let message = error.error;
+    console.log(error)
     if (error.response.data && error.response.data.errors) {
       message = error.response.data.errors;
     } else if (error.response.data && error.response.data.error) {

@@ -12,6 +12,16 @@ class Files extends Model
     protected $fillable = [
         'pathfile',
         'filename',
-        'type'
+        'type',
+        'processado',
+        'valido'
     ];
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\hasMany
+     */
+    public function balancos()
+    {
+        return $this->hasMany(Bal::class, 'id_file', 'id_file');
+    }
 }

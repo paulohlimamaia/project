@@ -34,6 +34,8 @@ Route::group(['middleware' => 'api'], function () {
     Route::apiResource('permissions', 'PermissionController')->middleware('permission:' . \App\Laravue\Acl::PERMISSION_PERMISSION_MANAGE);
 
     Route::get('/files', 'FilesController@index');
+    Route::get('/files/{idFile}/balancos', 'FilesController@balancos');
+    Route::get('/files/{idFile}/processar', 'FilesController@processar');
     Route::get('/files/{idFile}/delete', 'FilesController@delete');
     Route::post('/files', 'FilesController@upload');
 

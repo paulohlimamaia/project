@@ -18,6 +18,8 @@ class CreateFilesTable extends Migration
             $table->string('pathfile');
             $table->string('filename');
             $table->string('type');
+            $table->boolean('processado')->default(false);
+            $table->boolean('valido')->nullable();
             $table->timestamps();
         });
     }

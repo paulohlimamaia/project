@@ -114,7 +114,6 @@ export default {
       });
     },
     forgotPassword(){
-      console.log(this.$router);
       this.$router.push('/forgot');
     },
   },

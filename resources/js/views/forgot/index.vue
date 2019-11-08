@@ -13,7 +13,7 @@
       </el-form-item>
       <el-form-item>
         <el-button :loading="loading" type="primary" style="width:100%;" @click.native.prevent="handleForgot">
-          Sign in
+          Enviar
         </el-button>
       </el-form-item>
     </el-form>
@@ -23,6 +23,8 @@
 <script>
 // import LangSelect from '@/components/LangSelect';
 import { validEmail } from '@/utils/validate';
+import http from '@/utils/request';
+import { Message } from 'element-ui';
 
 export default {
   name: 'Forgot',
@@ -30,7 +32,7 @@ export default {
   data() {
     const validateEmail = (rule, value, callback) => {
       if (!validEmail(value)) {
-        callback(new Error('Please enter the correct email'));
+        callback(new Error('Digite um e-mail válido'));
       } else {
         callback();
       }
@@ -38,7 +40,6 @@ export default {
     return {
       forgotForm: {
         email: '',
-        password: '',
       },
       forgotRules: {
         email: [{ required: true, trigger: 'blur', validator: validateEmail }],
@@ -57,7 +58,29 @@ export default {
   },
   methods: {
     handleForgot(){
-      console.log('teste');
+      const self = this;
+      if (!self.forgotForm.email){
+        Message({
+          message: 'Digite um email!',
+          type: 'error',
+          duration: 5 * 1000,
+        });
+      } else {
+        self.loading = true;
+        http.post('/forgot', self.forgotForm).then(async function(response){
+          self.loading = false;
+
+          await Message({
+            message: 'E-mail enviado!',
+            type: 'success',
+            duration: 5 * 1000,
+          });
+
+          self.$router.push('/login');
+        }).catch(function(err){
+          self.loading = false;
+        });
+      }
     },
   },
 };

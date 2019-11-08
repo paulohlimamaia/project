@@ -1,5 +1,13 @@
 <template>
   <div class="dashboard-editor-container">
+    <!-- <el-upload
+      :data="fileData"
+      :multiple="false"
+      class="file-uploader"
+      drag
+      action="http://ssintegra.moraesdigital.com/api/files"
+      :on-success="handleSuccess"
+    > -->
     <el-upload
       :data="fileData"
       :multiple="false"
@@ -28,7 +36,7 @@ export default {
       this.$emit('input', val);
     },
     handleSuccess(response){
-      if(response.message === "success"){
+      if (response.message === 'success'){
         this.$router.push('/files');
       }
     },

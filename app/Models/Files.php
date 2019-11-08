@@ -24,4 +24,12 @@ class Files extends Model
     {
         return $this->hasMany(Bal::class, 'id_file', 'id_file');
     }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\hasMany
+     */
+    public function impts()
+    {
+        return $this->hasMany(Impt::class, 'id_file', 'id_file');
+    }
 }

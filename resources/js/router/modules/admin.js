@@ -8,7 +8,7 @@ const adminRoutes = {
   name: 'Administrator',
   alwaysShow: true,
   meta: {
-    title: 'Administrador',
+    title: 'Gerenciamento',
     icon: 'admin',
     permissions: ['view menu administrator'],
   },
@@ -18,7 +18,7 @@ const adminRoutes = {
       path: 'users/edit/:id(\\d+)',
       component: () => import('@/views/users/Profile'),
       name: 'UserProfile',
-      meta: { title: 'userProfile', noCache: true, permissions: ['manage user'] },
+      meta: { title: 'Perfil', noCache: true, permissions: ['manage user'] },
       hidden: true,
     },
     {

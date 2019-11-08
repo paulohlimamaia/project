@@ -29,18 +29,18 @@
               {{ $t('navbar.dashboard') }}
             </el-dropdown-item>
           </router-link> -->
-          <!-- <router-link v-show="userId !== null" :to="`/administrator/users/edit/${userId}`">
+          <router-link :to="`/users/edit/${userId}`">
             <el-dropdown-item>
-              {{ $t('navbar.profile') }}
+              Perfil
             </el-dropdown-item>
-          </router-link> -->
+          </router-link>
           <!-- <a target="_blank" href="https://github.com/tuandm/laravue/">
             <el-dropdown-item>
               {{ $t('navbar.github') }}
             </el-dropdown-item>
           </a> -->
           <el-dropdown-item>
-            <span style="display:block;" @click="logout">{{ $t('navbar.logOut') }}</span>
+            <span style="display:block;" @click="logout">Sair</span>
           </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>

@@ -35,9 +35,22 @@ Route::group(['middleware' => 'api'], function () {
 
     Route::get('/files', 'FilesController@index');
     Route::get('/files/{idFile}/balancos', 'FilesController@balancos');
+    Route::get('/files/{idFile}/impts', 'FilesController@impts');
     Route::get('/files/{idFile}/processar', 'FilesController@processar');
     Route::get('/files/{idFile}/delete', 'FilesController@delete');
     Route::post('/files', 'FilesController@upload');
+
+    Route::group(['prefix' => 'sim'], function () {
+        Route::group(['prefix' => '302'], function () {
+            Route::post('/', 'SimController@get302');
+            Route::get('/funcoes/{subfuncao?}', 'SimController@funcoes302');
+            Route::get('/subfuncoes/{funcao?}', 'SimController@subfuncoes302');
+            Route::get('/exercicios', 'SimController@exercicios302');
+        });
+    });
+
+
+    Route::post('/forgot', 'UserController@forgot');
 
     // Fake APIs
     Route::get('/table/list', function () {

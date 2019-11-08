@@ -108,48 +108,114 @@ export const asyncRoutes = [
   adminRoutes,
 
   {
-    path: '/layouts',
+    path: '/',
     component: Layout,
-    redirect: '/layouts/upload',
-    name: 'Layouts',
-    alwaysShow: true,
-    meta: {
-      title: 'Layouts',
-      icon: 'education',
-      permissions: ['view menu administrator'],
-    },
+    name: 'User',
+    meta: { title: 'Usuário', noCache: true, permissions: ['manage user'] },
+    hidden: true,
     children: [
       {
-        path: 'upload',
-        component: () => import('@/views/layoutsImport/index'),
-        name: 'Upload',
-        meta: { title: 'Upload', icon: 'documentation', noCache: false },
-      },
-      {
-        path: 'layouts',
-        component: () => import('@/views/layoutsExport/index'),
-        name: 'layoutsExport',
-        meta: { title: 'Exportação', icon: 'excel', noCache: false },
+        path: '/users/edit/:id(\\d+)',
+        component: () => import('@/views/users/Profile'),
+        name: 'UserProfile',
+        meta: { title: 'Perfil', noCache: true, permissions: ['manage user'] },
+        hidden: true,
       },
     ],
   },
+
   {
-    path: '/files',
+    path: '/receitas',
     component: Layout,
-    redirect: '/files/index',
-    name: 'Arquivos',
+    redirect: '/receitas/index',
+    name: 'Receitas',
     alwaysShow: true,
     meta: {
-      title: 'Arquivos',
-      icon: 'file',
-      permissions: ['view menu administrator'],
+      title: 'Receitas',
+      icon: 'dollar',
     },
     children: [
       {
         path: 'index',
-        component: () => import('@/views/fileList/index'),
+        component: () => import('@/views/receitas/index'),
+        name: 'Upload',
+        meta: { title: 'Upload', icon: 'guide', noCache: false },
+      },
+      {
+        path: 'lista',
+        component: () => import('@/views/receitas/list'),
         name: 'Lista',
         meta: { title: 'Lista', icon: 'list', noCache: false },
+      },
+      {
+        path: 'dados',
+        component: () => import('@/views/despesas/data'),
+        name: 'Dados',
+        meta: { title: 'Dados', icon: 'table', noCache: false },
+      },
+    ],
+  },
+
+  {
+    path: '/despesas',
+    component: Layout,
+    redirect: '/despesas/index',
+    name: 'Despesas',
+    alwaysShow: true,
+    meta: {
+      title: 'Despesas',
+      icon: 'dollar',
+    },
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/despesas/index'),
+        name: 'Upload',
+        meta: { title: 'Upload', icon: 'guide', noCache: false },
+      },
+      {
+        path: 'lista',
+        component: () => import('@/views/despesas/list'),
+        name: 'Lista',
+        meta: { title: 'Lista', icon: 'list', noCache: false },
+      },
+      {
+        path: 'dados',
+        component: () => import('@/views/despesas/data'),
+        name: 'Dados',
+        meta: { title: 'Dados', icon: 'table', noCache: false },
+      },
+    ],
+  },
+  {
+    path: '/correlacoes',
+    component: Layout,
+    redirect: '/correlacoes/index',
+    name: 'Correlações',
+    alwaysShow: true,
+    meta: {
+      title: 'Correlações',
+      icon: 'tree',
+    },
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/depara/index'),
+        name: 'Cadastro',
+        meta: { title: 'Cadastro', icon: 'tree-table', noCache: false },
+      },
+    ],
+  },
+  {
+    path: '/exportacao',
+    component: Layout,
+    redirect: 'noredirect',
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/exportacao/index'),
+        name: 'Exportação',
+        meta: { title: 'Exportação', icon: 'education' },
       },
     ],
   },

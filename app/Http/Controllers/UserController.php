@@ -16,12 +16,16 @@ use App\Laravue\JsonResponse;
 use App\Laravue\Models\Permission;
 use App\Laravue\Models\Role;
 use App\Laravue\Models\User;
+
+use App\Mail\ForgotMail;
+
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Mail;
 use Validator;
 
 /**
@@ -134,8 +138,16 @@ class UserController extends Controller
 
             $user->name = $request->get('name');
             $user->email = $email;
+            if($request->password and $request->confirmPassword){
+                if($request->password === $request->confirmPassword){
+                    $user->password = Hash::make($request->password);
+                } else {
+                    return response()->json(['error' => 'Senhas diferentes'], 400);
+                }
+            }
+            
             $user->save();
-            return new UserResource($user);
+            return response()->json(['message' => 'success', 'user' => new UserResource($user)], 200);
         }
     }
 
@@ -206,7 +218,7 @@ class UserController extends Controller
                 'role' => PermissionResource::collection($user->getPermissionsViaRoles()),
             ]);
         } catch (\Exception $ex) {
-            response()->json(['error' => $ex->getMessage()], 403);
+            
         }
     }
 
@@ -224,5 +236,24 @@ class UserController extends Controller
                 'array'
             ],
         ];
+    }
+
+    public function forgot(Request $request){
+        try{
+            $user = User::where('email', $request->email)->first();
+
+            if(!$user){throw new \Exception("Usuário não existe");}
+
+            $user->password = substr(md5(time()), 0, 8);
+
+            Mail::send(new ForgotMail($user));
+
+            $user->password = Hash::make($user->password);
+            $user->save();
+
+            return response()->json(['message' => 'success'], 200);
+        } catch(\Exception $e){
+            return response()->json(['error' => $e->getMessage()], 404);
+        }
     }
 }

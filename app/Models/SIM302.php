@@ -9,6 +9,7 @@ class SIM302 extends Model
     protected $table = 'sim302';
 
     protected $fillable = [
+        'id_file',
         "tpdocument",
         "cdtcmce",
         "dtverorca",

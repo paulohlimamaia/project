@@ -1,30 +1,46 @@
 <template>
+<!-- action="http://ssintegra.moraesdigital.com/api/files" -->
   <div class="dashboard-editor-container">
-    <!-- <el-upload
+    <el-upload
       :data="fileData"
       :multiple="false"
       class="file-uploader"
       drag
       action="http://ssintegra.moraesdigital.com/api/files"
       :on-success="handleSuccess"
-    > -->
+      :on-error="handleError"
+    >
+      <i class="el-icon-upload" />
+      <div class="el-upload__text">
+        Arraste ou <em>clique para upload de <strong>arquivo</strong> de Despesa</em>
+      </div>
+      <div slot="tip" class="el-upload__tip">Arquivo de dados (SIM302.DBF)</div>
+    </el-upload>
+
+    <br><br><br>
+
     <el-upload
       :data="fileData"
       :multiple="false"
       class="file-uploader"
       drag
-      action="http://localhost:8000/api/files"
+      action="http://ssintegra.moraesdigital.com/api/files/despesas"
       :on-success="handleSuccess"
+      :on-error="handleError"
     >
       <i class="el-icon-upload" />
       <div class="el-upload__text">
-        Arraste ou <em>clique para realizar o upload</em>
+        Arraste ou <em>clique para upload de <strong>layout</strong> de Despesa</em>
       </div>
+      <div slot="tip" class="el-upload__tip">Arquivo template para exportação (.IMPT)</div>
     </el-upload>
+
   </div>
 </template>
 
 <script>
+import { Message } from 'element-ui';
+
 export default {
   data() {
     return {
@@ -37,9 +53,16 @@ export default {
     },
     handleSuccess(response){
       if (response.message === 'success'){
-        this.$router.push('/receitas/lista');
+        this.$router.push('/despesas/lista');
       }
     },
+    handleError(error){
+      Message({
+          message: 'Tipo de Arquivo Inválido!',
+          type: 'error',
+          duration: 5 * 1000,
+      });
+    }
   },
 };
 </script>

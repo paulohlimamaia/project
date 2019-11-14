@@ -162,18 +162,19 @@ export default {
     },
 
     handleEditPermissions(id) {
+      let self = this
       this.dialogVisible = true;
       this.currentRoleId = id;
       this.$nextTick(() => {
         this.$refs.menuPermissions.setCheckedKeys(this.permissionKeys(this.roleMenuPermissions));
-        this.$refs.otherPermissions.setCheckedKeys(this.permissionKeys(this.roleOtherPermissions));
+        // this.$refs.otherPermissions.setCheckedKeys(this.permissionKeys(this.roleOtherPermissions));
       });
     },
 
     confirmPermission() {
       const checkedMenu = this.$refs.menuPermissions.getCheckedKeys();
-      const checkedOther = this.$refs.otherPermissions.getCheckedKeys();
-      const checkedPermissions = checkedMenu.concat(checkedOther);
+      // const checkedOther = this.$refs.otherPermissions.getCheckedKeys();
+      const checkedPermissions = checkedMenu;
       this.dialogLoading = true;
 
       roleResource.update(this.currentRole.id, { permissions: checkedPermissions }).then(response => {

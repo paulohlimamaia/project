@@ -8,7 +8,10 @@ use App\Models\Files;
 use App\Models\Bal;
 use App\Models\Impt;
 use App\Models\SIM302;
+use App\Models\Layouts;
+use App\Models\Siops;
 
+use XBase\Table;
 use Carbon\Carbon;
 use Exception;
 use Response;
@@ -34,9 +37,14 @@ class FilesController extends Controller
         try {
             $file = Files::where('id_file', $idFile)->first();
 
-            foreach($file->balancos as $balanco){$balanco->delete();}
+            if($file->type === "BAL"){
+                foreach($file->balancos as $balanco){$balanco->delete();}
+                Storage::delete($file->pathfile);
+            } else if($file->type === "DBF"){
+                foreach($file->sim302 as $sim302){$sim302->delete();}
+                Storage::disk('dbf')->delete($file->pathfile);
+            }
 
-            Storage::delete($file->pathfile);
             $file->delete();
 
             return Response::json([
@@ -47,7 +55,7 @@ class FilesController extends Controller
             return Response::json([
                 'message' => 'fail',
                 'error' => $e->getMessage()
-            ], 500);
+            ], 400);
         }
     }
 
@@ -55,15 +63,31 @@ class FilesController extends Controller
         try {
             $fileType = explode('.', $request->file->getClientOriginalName())[1];
 
-            if(in_array($fileType, ["BAL"])){throw new Exception("File type not supported!");}
 
-            $filePath = Storage::putFile('public/arquivos', $request->file);
+            if($fileType === "BAL"){
 
-            $file = Files::create([
-                'pathfile' => $filePath,
-                'filename' => $request->file->getClientOriginalName(),
-                'type' => $fileType
-            ]);
+                $filePath = Storage::putFile('public/arquivos', $request->file);
+
+                $file = Files::create([
+                    'pathfile' => $filePath,
+                    'filename' => $request->file->getClientOriginalName(),
+                    'type' => $fileType
+                ]);
+
+            } else if($fileType === "DBF"){
+
+                $originalName = $request->file->getClientOriginalName();
+
+                Storage::disk('dbf')->delete($originalName);
+
+                $filePath = Storage::disk('dbf')->put($originalName, file_get_contents($request->file));
+
+                $file = Files::where('filename', $originalName)->first();
+                $file->touch();
+
+            } else {
+                throw new Exception("Tipo de Arquivo Inválido!");
+            }
 
             return Response::json([
                 'message' => 'success',
@@ -73,7 +97,101 @@ class FilesController extends Controller
             return Response::json([
                 'message' => 'fail',
                 'error' => $e->getMessage()
-            ], 500);
+            ], 400);
+        }
+    }
+
+    public function uploadLayoutsReceitas(Request $request){
+        try {
+
+            $fileType = explode('.', $request->file->getClientOriginalName())[1];
+
+            if($fileType != "IMPT"){throw new Exception("Tipo de Arquivo Inválido!");}
+
+            $layout = Layouts::create([
+                'cod' => explode(";", file_get_contents($request->file))[0],
+                'name' => $request->file->getClientOriginalName(),
+                'pathfile' => Storage::putFile('public/layouts', $request->file),
+                'tipo' => 'RECEITA'
+            ]);
+
+            $file = fopen(Storage::path($layout->pathfile), 'r');
+            $arrFile = [];
+            while (!feof($file)) {$arrFile[] = fgets($file);}
+            fclose($file);
+
+            foreach($arrFile as $line){
+                $arrLine = explode(';', $line);
+
+                if(!(sizeof($arrLine) > 1)){continue;}
+                if($arrLine[1] === " "){continue;}
+
+                $siops = Siops::where('tipo', 'RECEITA')->where('codigo', $arrLine[1])->first();
+
+                if(!$siops){
+                    $siops = Siops::create([
+                        'codigo' => $arrLine[1],
+                        'tipo' => 'RECEITA'
+                    ]);
+                }
+            }
+
+            return Response::json([
+                'message' => 'success',
+                'data' => $layout
+            ], 200);
+        } catch (Exception $e) {
+            return Response::json([
+                'message' => 'fail',
+                'error' => $e->getMessage()
+            ], 400);
+        }
+    }
+
+    public function uploadLayoutsDespesas(Request $request){
+        try {
+
+            $fileType = explode('.', $request->file->getClientOriginalName())[1];
+
+            if($fileType != "IMPT"){throw new Exception("Tipo de Arquivo Inválido!");}
+
+            $layout = Layouts::create([
+                'cod' => explode(";", file_get_contents($request->file))[0],
+                'name' => $request->file->getClientOriginalName(),
+                'pathfile' => Storage::putFile('public/layouts', $request->file),
+                'tipo' => 'DESPESA'
+            ]);
+
+            $file = fopen(Storage::path($layout->pathfile), 'r');
+            $arrFile = [];
+            while (!feof($file)) {$arrFile[] = fgets($file);}
+            fclose($file);
+
+            foreach($arrFile as $line){
+                $arrLine = explode(';', $line);
+
+                if(!(sizeof($arrLine) > 1)){continue;}
+                if($arrLine[1] === " "){continue;}
+
+                $siops = Siops::where('tipo', 'DESPESA')->where('codigo', $arrLine[1])->first();
+
+                if(!$siops){
+                    $siops = Siops::create([
+                        'codigo' => $arrLine[1],
+                        'tipo' => 'DESPESA'
+                    ]);
+                }
+            }
+
+            return Response::json([
+                'message' => 'success',
+                'data' => $layout
+            ], 200);
+        } catch (Exception $e) {
+            return Response::json([
+                'message' => 'fail',
+                'error' => $e->getMessage()
+            ], 400);
         }
     }
 
@@ -91,11 +209,11 @@ class FilesController extends Controller
         }
     }
 
-    public function impts($idFile){
+    public function sim302($idFile, $ref){
         try {
             return Response::json([
                 'message' => 'success',
-                'data' => Files::where('id_file', $idFile)->first()->impts
+                'data' => SIM302::where('id_file', $idFile)->where('dtrefedocu', $ref)->get()
             ], 200);
         } catch (Exception $e) {
             return Response::json([
@@ -105,7 +223,7 @@ class FilesController extends Controller
         }
     }
 
-    public function processar($idFile){
+    public function processar($idFile, Request $request){
         try {
             $file = Files::where('id_file', $idFile)->first();
 
@@ -124,9 +242,7 @@ class FilesController extends Controller
                             'codigo_receita_orcamentaria' => $arrLine[5],
                             'codigo_grupo_fonte' => $arrLine[6],
                             'codigo_especificacao_fonte' => $arrLine[7],
-        
-                            'data_referencia_documentacao' => Carbon::create(substr($arrLine[8], 0, 4), substr($arrLine[8], 4, 2), 1),
-        
+                            'data_referencia_documentacao' => $arrLine[8],
                             'tipo_balancete' => $arrLine[9],
                             'valor_previsto_orcamento' => $arrLine[10],
                             'valor_anulacoes_mes_atual' => $arrLine[11],
@@ -138,38 +254,33 @@ class FilesController extends Controller
                         ]);
                     }
                 }
-            } else if($file->type === "IMPT"){
-                $fileData = Storage::get($file->pathfile);
-                // throw new Exception('Arquivo IMPT ainda não suportado');
-                foreach (explode("\n", $fileData) as $line){
-                    $arrLine = explode(';', str_replace('"', '',$line));
 
-                    if(sizeof($arrLine) > 1){
-                        Impt::create([
-                            'campo1' => $arrLine[0],
-                            'campo2' => $arrLine[1],
-                            'campo3' => $arrLine[2],
-                            'v0' => (!str_replace("R$", "",explode("<", explode(">", $arrLine[3])[1])[0])) ? explode("<", explode(">", $arrLine[3])[1])[0]."0.00" : explode("<", explode(">", $arrLine[3])[1])[0],
-                            'v1' => (!str_replace("R$", "",explode("<", explode(">", $arrLine[4])[1])[0])) ? explode("<", explode(">", $arrLine[4])[1])[0]."0.00" : explode("<", explode(">", $arrLine[4])[1])[0],
-                            'v2' => (!str_replace("R$", "",explode("<", explode(">", $arrLine[5])[1])[0])) ? explode("<", explode(">", $arrLine[5])[1])[0]."0.00" : explode("<", explode(">", $arrLine[5])[1])[0],
-                            'v3' => (!str_replace("R$", "",explode("<", explode(">", $arrLine[6])[1])[0])) ? explode("<", explode(">", $arrLine[6])[1])[0]."0.00" : explode("<", explode(">", $arrLine[6])[1])[0],
-                            'v4' => (!str_replace("R$", "",explode("<", explode(">", $arrLine[7])[1])[0])) ? explode("<", explode(">", $arrLine[7])[1])[0]."0.00" : explode("<", explode(">", $arrLine[7])[1])[0],
-                            'v5' => (!str_replace("R$", "",explode("<", explode(">", $arrLine[8])[1])[0])) ? explode("<", explode(">", $arrLine[8])[1])[0]."0.00" : explode("<", explode(">", $arrLine[8])[1])[0],
-                            'v6' => (!str_replace("R$", "",explode("<", explode(">", $arrLine[9])[1])[0])) ? explode("<", explode(">", $arrLine[9])[1])[0]."0.00" : explode("<", explode(">", $arrLine[9])[1])[0],
-                            'campo11' => $arrLine[10],
-                            'campo12' => $arrLine[11],
-                            'campo13' => $arrLine[12],
-                            'id_file' => $file->id_file
-                        ]);
+                $file->processado = true;
+                $file->save();
+
+            } else if($file->type === "DBF"){
+
+                $simTable = new Table($file->pathfile);
+
+                while ($record = $simTable->nextRecord()) {
+
+                    if(!($record->getChar('dtrefedocu') === $request->ref)){continue;}
+                    if(!($record->getChar('cdfuncao') === "10")){continue;}
+
+                    $data = [];
+        
+                    foreach($simTable->getColumns() as $colum){
+                        $data[$colum->name] = $record->getChar($colum->name);
                     }
 
+                    $data['id_file'] = $file->id_file;
+        
+                    SIM302::create($data);
                 }
+
             } else {
                 throw new Exception('Tipo de arquivo inválido');
             }
-
-            $file->processado = true;
-            $file->save();
 
             return Response::json([
                 'message' => 'success',

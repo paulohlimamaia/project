@@ -35,10 +35,13 @@ Route::group(['middleware' => 'api'], function () {
 
     Route::get('/files', 'FilesController@index');
     Route::get('/files/{idFile}/balancos', 'FilesController@balancos');
-    Route::get('/files/{idFile}/impts', 'FilesController@impts');
+    Route::get('/files/{idFile}/sim302/{ref}', 'FilesController@sim302');
     Route::get('/files/{idFile}/processar', 'FilesController@processar');
     Route::get('/files/{idFile}/delete', 'FilesController@delete');
     Route::post('/files', 'FilesController@upload');
+    Route::post('/files', 'FilesController@upload');
+    Route::post('/files/receitas', 'FilesController@uploadLayoutsReceitas');
+    Route::post('/files/despesas', 'FilesController@uploadLayoutsDespesas');
 
     Route::group(['prefix' => 'sim'], function () {
         Route::group(['prefix' => '302'], function () {
@@ -47,6 +50,30 @@ Route::group(['middleware' => 'api'], function () {
             Route::get('/subfuncoes/{funcao?}', 'SimController@subfuncoes302');
             Route::get('/exercicios', 'SimController@exercicios302');
         });
+    });
+
+    Route::group(['prefix' => 'correlacoes'], function(){
+        Route::group(['prefix' => 'origens'], function(){
+            Route::get('/receita', 'CorrelacoesController@getOrigensReceita');
+            Route::get('/despesas', 'CorrelacoesController@getOrigensDespesa');
+        });
+        
+        Route::group(['prefix' => 'destinos'], function(){
+            Route::get('/', 'CorrelacoesController@getDestinos');
+        });
+
+        Route::get('/', 'CorrelacoesController@index');
+        Route::post('/', 'CorrelacoesController@store');
+        Route::patch('/', 'CorrelacoesController@update');
+        Route::post('/delete', 'CorrelacoesController@delete');
+    });
+
+    Route::group(['prefix' => 'exportacoes'], function(){
+        Route::post('receitas', 'ExportacoesController@exportReceita');
+        Route::post('despesas', 'ExportacoesController@exportDespesa');
+        Route::get('layouts', 'ExportacoesController@getLayouts');
+        Route::get('receitas', 'ExportacoesController@getExerciciosDisponiveisReceita');
+        Route::get('despesas', 'ExportacoesController@getExerciciosDisponiveisDespesa');
     });
 
 

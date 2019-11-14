@@ -24,11 +24,8 @@ class CreateBalsTable extends Migration
             $table->string('codigo_receita_orcamentaria');
             $table->string('codigo_grupo_fonte');
             $table->string('codigo_especificacao_fonte');
-
-            $table->date('data_referencia_documentacao');
-
+            $table->string('data_referencia_documentacao');
             $table->string('tipo_balancete');
-
             $table->string('valor_previsto_orcamento');
             $table->string('valor_anulacoes_mes_atual');
             $table->string('valor_anulacoes_mes_passados');

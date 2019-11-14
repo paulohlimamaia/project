@@ -74,14 +74,7 @@
           prop="data_referencia_documentacao"
           label="Referência"
           width="100%"
-        >
-          <template slot-scope="scope">
-            <span>
-              {{ new Date(scope.row.data_referencia_documentacao).getFullYear() }} /
-              {{ ("0" + (new Date(scope.row.data_referencia_documentacao).getMonth() + 1)).slice(-2) }}
-            </span>
-          </template>
-        </el-table-column>
+        />
         <el-table-column
           prop="exercicio_orcamento"
           label="Exercício"

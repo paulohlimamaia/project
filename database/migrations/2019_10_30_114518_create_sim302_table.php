@@ -27,6 +27,9 @@ class CreateSIM302Table extends Migration
                 $table->string($colum->name)->nullable();            
             }
 
+            $table->unsignedInteger('id_file');
+            $table->foreign('id_file')->references('id_file')->on('files');
+
             $table->timestamps();
         });
     }

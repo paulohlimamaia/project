@@ -28,8 +28,8 @@ class Files extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\hasMany
      */
-    public function impts()
+    public function sim302()
     {
-        return $this->hasMany(Impt::class, 'id_file', 'id_file');
+        return $this->hasMany(SIM302::class, 'id_file', 'id_file');
     }
 }

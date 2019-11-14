@@ -4,13 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Codigos extends Model
+class Siops extends Model
 {
-    protected $table = 'codigos';
+    protected $table = 'siops';
 
     protected $fillable = [
-        'origem',
-        'destino',
+        'codigo',
         'tipo'
     ];
 }

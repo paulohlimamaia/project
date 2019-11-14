@@ -133,6 +133,7 @@ export const asyncRoutes = [
     meta: {
       title: 'Receitas',
       icon: 'dollar',
+      permissions: ['view menu receitas']
     },
     children: [
       {
@@ -148,10 +149,10 @@ export const asyncRoutes = [
         meta: { title: 'Lista', icon: 'list', noCache: false },
       },
       {
-        path: 'dados',
-        component: () => import('@/views/despesas/data'),
-        name: 'Dados',
-        meta: { title: 'Dados', icon: 'table', noCache: false },
+        path: 'exportacao',
+        component: () => import('@/views/receitas/exportacao'),
+        name: 'Exportação',
+        meta: { title: 'Exportação', icon: 'form', noCache: false },
       },
     ],
   },
@@ -165,6 +166,7 @@ export const asyncRoutes = [
     meta: {
       title: 'Despesas',
       icon: 'dollar',
+      permissions: ['view menu despesas']
     },
     children: [
       {
@@ -180,10 +182,18 @@ export const asyncRoutes = [
         meta: { title: 'Lista', icon: 'list', noCache: false },
       },
       {
-        path: 'dados',
-        component: () => import('@/views/despesas/data'),
-        name: 'Dados',
-        meta: { title: 'Dados', icon: 'table', noCache: false },
+        path: 'exportacao',
+        component: () => import('@/views/despesas/exportacao'),
+        name: 'Exportação',
+        meta: { title: 'Exportação', icon: 'form', noCache: false },
+      },
+      {
+        path: 'valida',
+        component: () => import('@/views/despesas/valida'),
+        name: 'Validação',
+        hidden: true,
+        props: true,
+        meta: { title: 'Dados', noCache: true },
       },
     ],
   },
@@ -196,26 +206,20 @@ export const asyncRoutes = [
     meta: {
       title: 'Correlações',
       icon: 'tree',
+      permissions: ['view menu correlacoes']
     },
     children: [
       {
-        path: 'index',
-        component: () => import('@/views/depara/index'),
-        name: 'Cadastro',
-        meta: { title: 'Cadastro', icon: 'tree-table', noCache: false },
+        path: 'receitas',
+        component: () => import('@/views/depara/receitas'),
+        name: 'Receitas',
+        meta: { title: 'Receitas', icon: 'tree-table', noCache: false },
       },
-    ],
-  },
-  {
-    path: '/exportacao',
-    component: Layout,
-    redirect: 'noredirect',
-    children: [
       {
-        path: 'index',
-        component: () => import('@/views/exportacao/index'),
-        name: 'Exportação',
-        meta: { title: 'Exportação', icon: 'education' },
+        path: 'despesas',
+        component: () => import('@/views/depara/despesas'),
+        name: 'Despesas',
+        meta: { title: 'Despesas', icon: 'tree-table', noCache: false },
       },
     ],
   },

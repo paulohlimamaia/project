@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateCodigosTable extends Migration
+class CreateLayoutsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,11 @@ class CreateCodigosTable extends Migration
      */
     public function up()
     {
-        Schema::create('codigos', function (Blueprint $table) {
+        Schema::create('layouts', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('origem')->unique();
-            $table->string('destino');
+            $table->string('cod');
+            $table->string('name');
+            $table->string('pathfile');
             $table->enum('tipo', ['RECEITA', 'DESPESA']);
             $table->timestamps();
         });
@@ -29,6 +30,6 @@ class CreateCodigosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('codigos');
+        Schema::dropIfExists('layouts');
     }
 }

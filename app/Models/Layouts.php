@@ -4,13 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Codigos extends Model
+class Layouts extends Model
 {
-    protected $table = 'codigos';
-
     protected $fillable = [
-        'origem',
-        'destino',
+        'cod',
+        'name',
+        'pathfile',
         'tipo'
     ];
 }

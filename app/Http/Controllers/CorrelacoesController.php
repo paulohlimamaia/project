@@ -24,6 +24,14 @@ class CorrelacoesController extends Controller
                 $codigos->where('destino', 'ilike', "%$request->destino%");
             }
 
+            if($request->origemdescricao){
+                $codigos->where('origem_descri', 'ilike', "%$request->origemdescricao%");
+            }
+
+            if($request->destinodescricao){
+                $codigos->where('destino_descri', 'ilike', "%$request->destinodescricao%");
+            }
+
             return Response::json([
                 'message' => 'success',
                 'data' => $codigos->paginate()
@@ -49,7 +57,9 @@ class CorrelacoesController extends Controller
             
             $codigo = Codigos::create([
                 'origem' => $request->origem,
+                'origem_descri' => $request->origemdescricao,
                 'destino' => $request->destino,
+                'destino_descri' => $request->destinodescricao,
                 'tipo' => $request->type
             ]);
 
@@ -69,7 +79,9 @@ class CorrelacoesController extends Controller
         try {
             $codigo = Codigos::where('id', $request->id)->update([
                 'origem' => $request->origem,
-                'destino' => $request->destino
+                'destino' => $request->destino,
+                'origem_descri' => $request->origemdescricao,
+                'destino_descri' => $request->destinodescricao,
             ]);
 
             return Response::json([
@@ -102,9 +114,15 @@ class CorrelacoesController extends Controller
 
     public function getOrigensReceita(){
         try {
+            $arrReceitas = array_values(array_unique(Bal::pluck('codigo_receita_orcamentaria')->toArray()));
+
+            $arrCodigos = array_values(Codigos::where('tipo', 'RECEITA')->pluck('origem')->toArray());
+
+            $diff = array_diff($arrReceitas, $arrCodigos);
+
             return Response::json([
                 'message' => 'success',
-                'data' => array_values(array_unique(Bal::pluck('codigo_receita_orcamentaria')->toArray()))
+                'data' => array_values($diff)
             ], 200);
         } catch (Exception $e) {
             return Response::json([
@@ -130,9 +148,15 @@ class CorrelacoesController extends Controller
 
     public function getDestinos(Request $request){
         try {
+            $arrDestinos = array_values(array_unique(Siops::where('tipo', $request->type)->pluck('codigo')->toArray()));
+
+            $arrCodigos = array_values(Codigos::where('tipo', $request->type)->pluck('destino')->toArray());
+
+            $diff = array_diff($arrDestinos, $arrCodigos);
+
             return Response::json([
                 'message' => 'success',
-                'data' => array_values(array_unique(Siops::where('tipo', $request->type)->pluck('codigo')->toArray()))
+                'data' => array_values($diff)
             ], 200);
         } catch (Exception $e) {
             return Response::json([

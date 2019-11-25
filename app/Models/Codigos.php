@@ -10,7 +10,9 @@ class Codigos extends Model
 
     protected $fillable = [
         'origem',
+        'origem_descri',
         'destino',
+        'destino_descri',
         'tipo'
     ];
 }

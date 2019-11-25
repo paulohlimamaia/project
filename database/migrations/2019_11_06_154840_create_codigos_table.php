@@ -16,7 +16,9 @@ class CreateCodigosTable extends Migration
         Schema::create('codigos', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('origem')->unique();
+            $table->string('origem_descri');
             $table->string('destino');
+            $table->string('destino_descri');
             $table->enum('tipo', ['RECEITA', 'DESPESA']);
             $table->timestamps();
         });

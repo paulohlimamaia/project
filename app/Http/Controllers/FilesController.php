@@ -232,6 +232,10 @@ class FilesController extends Controller
                 foreach (explode("\n", $fileData) as $line){
                     $arrLine = explode(',', str_replace('"', '',$line));
 
+                    if(auth()->user()->cod_municipio && auth()->user()->cod_municipio != $arrLine[1]){
+                        throw new Exception("Você não tem permissão para processar dados deste município!");
+                    }
+
                     if(sizeof($arrLine) > 1){
                         Bal::create([
                             'tipo_documento' => $arrLine[0],
@@ -263,6 +267,10 @@ class FilesController extends Controller
                 $simTable = new Table($file->pathfile);
 
                 while ($record = $simTable->nextRecord()) {
+
+                    if(auth()->user()->cod_municipio && auth()->user()->cod_municipio != $record->getChar('cdtcmce')){
+                        throw new Exception("Você não tem permissão para processar dados deste município!");
+                    }
 
                     if(!($record->getChar('dtrefedocu') === $request->ref)){continue;}
                     if(!($record->getChar('cdfuncao') === "10")){continue;}

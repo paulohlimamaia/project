@@ -4,6 +4,7 @@
       :data="files"
       height="250"
       style="width: 100%"
+      empty-text="Nenhuma Receita Carregada"
     >
       <el-table-column
         prop="filename"

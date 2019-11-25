@@ -96,6 +96,9 @@
           <el-form-item label="Nome" prop="name">
             <el-input v-model="newUser.name" />
           </el-form-item>
+          <el-form-item label="Município (Código)" prop="cod_municipio">
+            <el-input v-model="newUser.cod_municipio" />
+          </el-form-item>
           <el-form-item label="E-mail" prop="email">
             <el-input v-model="newUser.email" />
           </el-form-item>
@@ -168,6 +171,7 @@ export default {
       },
       rules: {
         role: [{ required: true, message: 'Escolha um Perfil', trigger: 'change' }],
+        cod_municipio: [{ required: true, message: 'Digite um código', trigger: 'change' }],
         name: [{ required: true, message: 'Preencha um Nome', trigger: 'blur' }],
         email: [
           { required: true, message: 'Preencha um Email', trigger: 'blur' },
